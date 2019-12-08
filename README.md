@@ -25,9 +25,7 @@ URL: http://127.0.0.1:8000/sightings/
 
 In this page, we can view all the information of every squirrel spotted in the Central Park. Besides, we can also edit any information of any squirrel by clicking the "Edit" botton and we can add new squirrel data by clicking the "Add a New Squirrel" button
 
-    3.1 New Squirrel Adding page
-    
-    URL: http://127.0.0.1:8000/sightings/add/
+New Squirrel Adding page: http://127.0.0.1:8000/sightings/add/
     
 4. Squirrel Stats
 
