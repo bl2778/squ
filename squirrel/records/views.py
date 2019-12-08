@@ -5,6 +5,9 @@ from django.shortcuts import redirect
 from .models import Squirrel
 from .forms import SquirrelForm
 
+def index(request):
+    return render(request,'records/index.html',{})
+
 def all_squirrels(request):
     squirrels = Squirrel.objects.all()
     context = {
@@ -12,9 +15,10 @@ def all_squirrels(request):
     }
     return render(request, 'records/list.html', context)
 
-def squirrel_details(request, squirrel_id):
-    squirrel = Squirrel.objects.get(id=squirrel_id)
-    return HttpResponse(squirrel.Shift)
+def map(request):
+    squirrels = Squirrel.objects.all()
+    return render(request, 'records/map.html', {'squirrels':squirrels})
+
 
 def edit_squirrel(request, squirrel_id):
     squirrel = Squirrel.objects.get(id=squirrel_id)
@@ -23,7 +27,7 @@ def edit_squirrel(request, squirrel_id):
         # check data with form
         if form.is_valid():
             form.save()
-            return redirect(f'/records/{squirrel_id}')
+            return redirect(f'/records/list')
     else:
         form = SquirrelForm(instance=squirrel)
 
@@ -36,17 +40,26 @@ def edit_squirrel(request, squirrel_id):
 def add_squirrel(request):
     if request.method == 'POST':
         form = SquirrelForm(request.POST)
-        # check data with form
         if form.is_valid():
             form.save()
-            return redirect(f'/records/list/')
+            return redirect('records:list')
+
     else:
         form = SquirrelForm()
 
     context = {
-        'form:': form,
-        'jazz': True,
+        'form': form,
     }
 
-    return render(request, 'records/edit.html', context)
+    return render(request, 'records/add.html', context)
+
+def stats(request):
+    squirrels=Squirrel.objects
+    squnumber=squirrels.count()
+    amnumber=squirrels.filter(Shift='AM').count()
+    pmnumber=squirrels.filter(Shift='PM').count()
+    adultnumber=squirrels.filter(Age='Adult').count()
+    junumber=squirrels.filter(Age='Juvenile').count()
+    context={'squnumber':squnumber,'amnumber':amnumber,'pmnumber':pmnumber,'adultnumber':adultnumber,'junumber':junumber}
+    return render(request, 'records/stats.html',context)
 
